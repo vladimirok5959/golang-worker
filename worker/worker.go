@@ -16,10 +16,10 @@ type Callback func(ctx context.Context, w *Worker)
 func New(f Callback) *Worker {
 	ctx, cancel := context.WithCancel(context.Background())
 	w := Worker{ctx: ctx, cancel: cancel, chDone: make(chan bool)}
-	return (&w).doit(f)
+	return (&w).loop(f)
 }
 
-func (this *Worker) doit(f func(ctx context.Context, w *Worker)) *Worker {
+func (this *Worker) loop(f func(ctx context.Context, w *Worker)) *Worker {
 	go func() {
 		for {
 			select {

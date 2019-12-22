@@ -11,7 +11,7 @@ import (
 func main() {
 	fmt.Printf("Start!\n")
 
-	w1 := worker.New(func(ctx context.Context, w *worker.Worker) {
+	w1 := worker.New(func(ctx context.Context, w *worker.Worker, o *[]worker.Iface) {
 		fmt.Printf("Worker #1 one tick\n")
 		for i := 0; i < 1000; i++ {
 			select {
@@ -22,9 +22,9 @@ func main() {
 				time.Sleep(1 * time.Millisecond)
 			}
 		}
-	})
+	}, nil)
 
-	w2 := worker.New(func(ctx context.Context, w *worker.Worker) {
+	w2 := worker.New(func(ctx context.Context, w *worker.Worker, o *[]worker.Iface) {
 		fmt.Printf("Worker #2 one tick\n")
 		for i := 0; i < 1000; i++ {
 			select {
@@ -35,14 +35,14 @@ func main() {
 				time.Sleep(1 * time.Millisecond)
 			}
 		}
-	})
+	}, nil)
 
-	_ = worker.New(func(ctx context.Context, w *worker.Worker) {
+	_ = worker.New(func(ctx context.Context, w *worker.Worker, o *[]worker.Iface) {
 		fmt.Printf("Worker #3 one tick\n")
 		time.Sleep(2 * time.Second)
 		fmt.Printf("Worker #3 Exit\n")
 		w.Shutdown(nil)
-	})
+	}, nil)
 
 	time.Sleep(3 * time.Second)
 

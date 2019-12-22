@@ -11,15 +11,17 @@ type Worker struct {
 	stopped bool
 }
 
-type Callback func(ctx context.Context, w *Worker)
+type Iface interface{}
 
-func New(f Callback) *Worker {
+type Callback func(ctx context.Context, w *Worker, o *[]Iface)
+
+func New(f Callback, o *[]Iface) *Worker {
 	ctx, cancel := context.WithCancel(context.Background())
 	w := Worker{ctx: ctx, cancel: cancel, chDone: make(chan bool)}
-	return (&w).loop(f)
+	return (&w).loop(f, o)
 }
 
-func (this *Worker) loop(f func(ctx context.Context, w *Worker)) *Worker {
+func (this *Worker) loop(f Callback, o *[]Iface) *Worker {
 	go func() {
 		for {
 			select {
@@ -27,7 +29,7 @@ func (this *Worker) loop(f func(ctx context.Context, w *Worker)) *Worker {
 				this.chDone <- true
 				return
 			default:
-				f(this.ctx, this)
+				f(this.ctx, this, o)
 			}
 		}
 	}()

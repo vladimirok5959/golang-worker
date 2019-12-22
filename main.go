@@ -41,12 +41,12 @@ func main() {
 		fmt.Printf("Worker #3 one tick\n")
 		time.Sleep(2 * time.Second)
 		fmt.Printf("Worker #3 Exit\n")
-		w.Finish()
+		w.Shutdown(nil)
 	})
 
 	time.Sleep(3 * time.Second)
 
-	w1.Finish()
+	w1.Shutdown(nil)
 
 	if err := w2.Shutdown(nil); err != nil {
 		fmt.Printf("Worker #2 shutdown error: %s\n", err.Error())

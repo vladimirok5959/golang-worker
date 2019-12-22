@@ -8,6 +8,7 @@ type Worker struct {
 	ctx    context.Context
 	cancel context.CancelFunc
 	chDone chan bool
+	stop   bool
 }
 
 type Callback func(ctx context.Context, w *Worker)
@@ -35,6 +36,12 @@ func (this *Worker) doit(f func(ctx context.Context, w *Worker)) *Worker {
 }
 
 func (this *Worker) Shutdown(ctx context.Context) error {
+	if this.stop {
+		return nil
+	}
+
+	this.stop = true
+
 	ctxb := ctx
 	if ctxb == nil {
 		ctxb = context.Background()
@@ -48,8 +55,4 @@ func (this *Worker) Shutdown(ctx context.Context) error {
 	case <-ctxb.Done():
 		return ctxb.Err()
 	}
-}
-
-func (this *Worker) Finish() {
-	this.cancel()
 }

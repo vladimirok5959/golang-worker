@@ -37,6 +37,13 @@ func main() {
 		}
 	})
 
+	_ = worker.New(func(ctx context.Context, w *worker.Worker) {
+		fmt.Printf("Worker #3 one tick\n")
+		time.Sleep(2 * time.Second)
+		fmt.Printf("Worker #3 Exit\n")
+		w.Finish()
+	})
+
 	time.Sleep(3 * time.Second)
 
 	w1.Finish()

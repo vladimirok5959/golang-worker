@@ -1,10 +1,10 @@
 package worker
 
 import (
-	"time"
-	"errors"
 	"context"
+	"errors"
 	"testing"
+	"time"
 )
 
 type SomeTest struct {
@@ -29,8 +29,6 @@ func compareResults(v *SomeTest) (bool, error) {
 	case <-v.Done:
 		return v.Variable, worker.Shutdown(nil)
 	}
-
-	return v.Variable, worker.Shutdown(nil)
 }
 
 func TestGoroutineAndChangeVariable(t *testing.T) {

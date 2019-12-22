@@ -44,14 +44,21 @@ func main() {
 		w.Shutdown(nil)
 	}, nil)
 
+	// Just wait for goroutines
 	time.Sleep(3 * time.Second)
 
+	// Shutdown first
+	// Normally, it's must be used with context
 	w1.Shutdown(nil)
 
+	// Shutdown second
+	// Normally, it's must be used with context
 	if err := w2.Shutdown(nil); err != nil {
 		fmt.Printf("Worker #2 shutdown error: %s\n", err.Error())
 	}
 
+	// Wait for third
+	// Will be exited automatically
 	time.Sleep(1 * time.Second)
 
 	fmt.Printf("End!\n")

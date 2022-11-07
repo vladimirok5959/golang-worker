@@ -1,11 +1,14 @@
 # golang-worker
+
 Simple background worker
 
 ## How to use
-```
+
+```sh
 go get github.com/vladimirok5959/golang-worker
 ```
-```
+
+```go
 package main
 
 import (
